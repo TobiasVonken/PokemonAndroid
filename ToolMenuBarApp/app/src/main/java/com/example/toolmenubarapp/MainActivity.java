@@ -1,13 +1,22 @@
 package com.example.toolmenubarapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +27,29 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        Spinner spinner = findViewById(R.id.spinner);
+        String[] pokemons = {"Bulbasaur","Dragonite", "Pikachu"};
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pokemons);
+
+        spinner.setAdapter(arrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String pokemon = arrayAdapter.getItem(position);
+
+                setPokemon(pokemon);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -39,6 +71,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.toolbar_favorite){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.btn_star_big_off);
+            builder.setTitle("Rating");
+            builder.setMessage("Please enter your rating");
+            builder.setView(View.inflate(this, R.layout.dialog_favorite,
+                    null));
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(MainActivity.this,"you succesfully filled in your rating",Toast.LENGTH_LONG).show();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(MainActivity.this,"you cancelled your rating",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            builder.create().show();
+        }
         return true;
     }
 
