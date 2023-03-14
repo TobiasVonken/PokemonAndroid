@@ -23,27 +23,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        List<Pokemon> list = new ArrayList<>();
-        list.add(new Pokemon(R.drawable.bulbasaur, "Bulbasaur"));
-        list.add(new Pokemon(R.drawable.dragonite, "Dragonite"));
-        list.add(new Pokemon(R.drawable.pikachu, "Pikachu"));
-
-        recyclerView.setAdapter(new PokemonAdapter(list, new PokemonAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(Pokemon pokemon) {
-                showToast(pokemon.name);
-            }
-        }));
-
 
     }
 
-    private void showToast(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-    }
+//    private void showToast(String message){
+//        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+//    }
 
 
 }
