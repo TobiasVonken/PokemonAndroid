@@ -15,6 +15,5 @@ public class PokemonViewHolder extends RecyclerView.ViewHolder{
         super(view);
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
-
     }
 }

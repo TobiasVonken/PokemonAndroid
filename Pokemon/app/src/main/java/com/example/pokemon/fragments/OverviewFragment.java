@@ -2,6 +2,7 @@ package com.example.pokemon.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.pokemon.MainActivity;
 import com.example.pokemon.Model.Pokemon;
 import com.example.pokemon.PokemonAdapter;
 import com.example.pokemon.R;
@@ -19,6 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OverviewFragment extends Fragment {
+
+    public interface OnClickListener{
+        void onItemSelected(Pokemon pokemon);
+    }
+
+    OnClickListener listener;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -41,9 +49,12 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onItemClick(Pokemon pokemon) {
                 showToast(pokemon.name);
+                if(listener != null){
+                    listener.onItemSelected((pokemon));
+                }
             }
         }));
-        
+
         return view;
     }
 
@@ -51,4 +62,10 @@ public class OverviewFragment extends Fragment {
         Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        listener = (MainActivity) getActivity();
+    }
 }
