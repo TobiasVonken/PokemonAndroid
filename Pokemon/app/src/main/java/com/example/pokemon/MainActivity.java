@@ -1,6 +1,7 @@
 package com.example.pokemon;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,17 +21,44 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OverviewFragment.OnClickListener {
 
+    private FragmentManager manager;
+
+    public MainActivity() {
+        this.manager = this.getSupportFragmentManager();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(findViewById(R.id.Layout_Default) != null){
+
+            manager.beginTransaction()
+                    .hide(manager.findFragmentById(R.id.detailFragment))
+                    .show(manager.findFragmentById(R.id.overviewFragment))
+                    .commit();
+        }
+        if(findViewById(R.id.Layout_landscape) != null){
+            manager.beginTransaction()
+                    .show(manager.findFragmentById(R.id.overviewFragment))
+                    .show(manager.findFragmentById(R.id.detailFragment))
+                    .commit();
+        }
 
     }
 
     @Override
     public void onItemSelected(Pokemon pokemon) {
+        if(findViewById(R.id.Layout_Default) != null){
+            manager.beginTransaction()
+                    .hide(manager.findFragmentById(R.id.overviewFragment))
+                    .show(manager.findFragmentById(R.id.detailFragment))
+                    .addToBackStack(null)
+                    .commit();
+        }
         DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+
         detailFragment.setPokemon(pokemon);
     }
 
